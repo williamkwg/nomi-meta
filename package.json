@@ -13,6 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    
+  },
+  "devDependencies": {
     "typescript": "^2.8.1"
   }
 }
