@@ -4,7 +4,7 @@
   "description": "meta middleware for nomi.js. Show meta information.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
@@ -12,10 +12,11 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
-    
+    "koa": "^2.5.0",
+    "mocha": "^5.1.0",
+    "sinon": "^4.5.0",
+    "supertest": "^3.0.0"
   }
 }
