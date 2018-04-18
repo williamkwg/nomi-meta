@@ -43,6 +43,7 @@ describe('meta', ()=>{
         it('should log a request start', () => {
             return request(app.listen())
                 .get('/')
+                
                 .expect(404, ()=> {
                     expect(log).to.have.been.calledWith('[meta] request started, host: %s, user-agent: %s',
                         ctx.host,ctx.header['user-agent'])
@@ -65,6 +66,7 @@ describe('meta', ()=>{
         it('should log a request', () => {
             return request(app.listen())
                 .get('/')
+               
                 .expect(404, () => {
                     expect(log).to.have.been.
                         calledWith(`${ctx.method} ${ctx.url} ${ctx.status} ${endTime - startTime}ms`)
@@ -73,10 +75,11 @@ describe('meta', ()=>{
     });
 
     describe('cluster start', () => {
+        app = App();
         it('should ignore keep-alive header when request is not keep-alive', () => {
             return request(app.listen())
                 .get('/')
-                .expect('X-Response-Time', /\d+/)
+                
                 .expect(res => assert(!res.headers['keep-alive']))
                 //.expect(200);
         });
@@ -84,7 +87,7 @@ describe('meta', ()=>{
             return request(app.listen())
                 .get('/')
                 .set('connection', 'keep-alive')
-                .expect('X-Response-Time', /\d+/)
+                 
                 .expect('keep-alive', 'timeout=5')
             //.expect(200);
         }); 
