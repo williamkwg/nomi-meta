@@ -1,4 +1,4 @@
-/**!
+/**
  * nomi-meta - test/middleware.test.js
  */
 
@@ -15,25 +15,34 @@ const request = require('supertest');
 
 let sandbox,log,app;
 describe('meta', ()=>{
-    describe('default config',async ()=> {
+    describe('default config', ()=> {
         beforeEach(()=> {
-            app =App();
-        })
-        
+            sandbox = sinon.sandbox.create()
+            log = sandbox.spy(console, 'log')
+
+            app = App();
+        });
+        afterEach(function () {
+            sandbox.restore()
+        });
+
         it('should get X-Response-Time header', () => {
             return request(app.listen())
                 .get('/')
                 .expect('X-Response-Time', /\d+/)
-                //.expect(200);
+                .expect(()=> {
+                    assert(log.notCalled)
+                })
+                .end(200)
+            });
         });
-    });
+    
 
     describe('meta.logging = true', ()=> {
-        app = App({logging: true});
-
         beforeEach(function () {
             sandbox = sinon.sandbox.create()
             log = sandbox.spy(console, 'log')
+            app = App({logging: true});
         });
 
         afterEach(function () {
@@ -44,19 +53,18 @@ describe('meta', ()=>{
             return request(app.listen())
                 .get('/')
                 .expect('X-Response-Time', /\d+/)
-                .expect(404, ()=> {
-                    expect(log).to.have.been.calledWith('[meta] request started, host: %s, user-agent: %s',
-                        ctx.host,ctx.header['user-agent'])
-                });
+                .expect( ()=> {
+                    assert(log.called);
+                })
+                .end(200) ;
         });
     });
 
-    describe('meta.logRequest = true', () => {
-        app = App({ logRequest: true });
-
+    describe('meta.logRequset = true', () => {
         beforeEach(function () {
             sandbox = sinon.sandbox.create()
             log = sandbox.spy(console, 'log')
+            app = App({ logRequset: true });
         });
 
         afterEach(function () {
@@ -67,32 +75,22 @@ describe('meta', ()=>{
             return request(app.listen())
                 .get('/')
                 .expect('X-Response-Time', /\d+/)
-                .expect(404, () => {
-                    expect(log).to.have.been.
-                        calledWith(`${ctx.method} ${ctx.url} ${ctx.status} ${endTime - startTime}ms`)
-                });
+                .expect(()=> {
+                    assert(log.called);
+                })
+                .end(200);
         });
-    });
 
-    describe('cluster start', () => {
-        app = App();
-        it('should ignore keep-alive header when request is not keep-alive', () => {
+        it('should log a request with err', () => {
             return request(app.listen())
                 .get('/')
                 .expect('X-Response-Time', /\d+/)
-                .expect(res => assert(!res.headers['keep-alive']))
-                //.expect(200);
+                .expect(() => {
+                    assert(log.notCalled);
+                })
+                .end(200);
         });
-        it('should get keep-alive header when request is keep-alive', () => {
-            return request(app.listen())
-                .get('/')
-                .set('connection', 'keep-alive')
-                .expect('X-Response-Time', /\d+/)
-                .expect('keep-alive', 'timeout=5')
-            //.expect(200);
-        }); 
     });
-
 });
 
 function App(options) {
