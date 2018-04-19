@@ -32,8 +32,7 @@ describe('meta', ()=>{
                 .expect('X-Response-Time', /\d+/)
                 .expect(()=> {
                     assert(log.notCalled)
-                })
-                .end(200)
+                });
             });
         });
     
@@ -55,8 +54,7 @@ describe('meta', ()=>{
                 .expect('X-Response-Time', /\d+/)
                 .expect( ()=> {
                     assert(log.called);
-                })
-                .end(200) ;
+                });
         });
     });
 
@@ -73,12 +71,13 @@ describe('meta', ()=>{
 
         it('should log a request', () => {
             return request(app.listen())
-                .get('/')
+                .get('/200')
                 .expect('X-Response-Time', /\d+/)
                 .expect(()=> {
                     assert(log.called);
-                })
-                .end(200);
+                });
+                
+               
         });
 
         it('should log a request with err', () => {
@@ -87,8 +86,7 @@ describe('meta', ()=>{
                 .expect('X-Response-Time', /\d+/)
                 .expect(() => {
                     assert(log.notCalled);
-                })
-                .end(200);
+                }); 
         });
     });
 });
