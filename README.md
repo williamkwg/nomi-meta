@@ -15,7 +15,7 @@ Node.js >= 8.0.0  required.
 ``` javascript
 
 const assert = require('assert');
-const meta = require('../');
+const meta = require('nomi-meta');
 const sinon = require('sinon');
 const Koa = require('koa');
 const request = require('supertest');
