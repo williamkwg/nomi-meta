@@ -1,16 +1,23 @@
 {
   "name": "nomi-meta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "meta middleware for nomi.js. Show meta information.",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab.corp.qunar.com:fe/nomi-meta.git"
+    "innerurl": "git@gitlab.corp.qunar.com:fe/nomi-meta.git",
+    "url": "https://github.com/williamkwg/nomi-meta.git"
   },
-  "author": "",
+  "author": "xiaoli.liu",
+  "keywords": [
+    "nomi",
+    "nomi-meta",
+    "meta",
+    "nomi-middleware"
+  ],
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
